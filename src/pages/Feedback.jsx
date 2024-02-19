@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import feedbackService from '../services/feedback.service';
 import { Space, Table } from 'antd';
+import Spinner from '../components/Spinner';
 
 const columns = [
     {
@@ -28,10 +29,12 @@ function Feedback() {
     const [feedbackData, setFeedbackData] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(20);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchFeedbackData = async () => {
             try {
+                setLoading(true);
                 const response = await feedbackService.getFeedbackData()
                 const feedback = response.data
                 const data = [];
@@ -46,6 +49,8 @@ function Feedback() {
                 setFeedbackData(data);
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -56,9 +61,17 @@ function Feedback() {
         setPageSize(pagination.pageSize);
     }
     return (
-        <div className='bordered-table'>
-            <Table columns={columns} dataSource={feedbackData} onChange={handleTableChange} pagination={{ total: feedbackData?.length, current: page, pageSize: pageSize }} />
-        </div>
+        <>
+            {
+                loading ? (
+                    <Spinner />
+                ) : (feedbackData &&
+                    <div className='bordered-table'>
+                        <Table columns={columns} dataSource={feedbackData} onChange={handleTableChange} pagination={{ total: feedbackData?.length, current: page, pageSize: pageSize }} />
+                    </div>
+                )
+            }
+        </>
     )
 }
 

@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import feedbackService from '../services/feedback.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartBar, faChartLine, faChartArea } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '../components/Spinner';
+
 
 function Dashboard() {
     const [feedCount, setFeedCount] = useState(0);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true);
                 const average = await feedbackService.getAverage();
                 console.log(average)
                 setFeedCount(average.data.numberFeedbacks);
             } catch (error) {
                 console.log(error);
+            } finally {
+                setLoading(false)
             }
         };
 
@@ -30,6 +36,8 @@ function Dashboard() {
     }, []);
 
     return (
+        <div>
+        {loading? (<Spinner />): (
         <div className="container mx-auto p-4 md:p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  sm:gap-4 sm:p-4 h-full">
             {/* Card 1 */}
@@ -57,6 +65,8 @@ function Dashboard() {
                 <AnalyticsIcons className="text-xl sm:text-3xl"/>
             </div>
         </div>
+        </div>
+        )}
         </div>
     );
 }

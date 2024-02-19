@@ -38,9 +38,9 @@ function ProfilePage() {
     <>
       <Navbar />
       <div className="flex flex-col item-center justify-center mt-20">
-        {profileImage && <img src={profileImage} alt="Profile Image" className="w-15 h-15 rounded-full mx-auto" />}
+        {profileImage && <img src={profileImage} alt="Profile Image" className="w-35 h-52 rounded-ss-md mx-auto" />}
         <form onSubmit={handleUpload} className="max-w-md mx-auto space-y-4 font-[sans-serif] text-[#333] mt-4">
-          <div className="font-[sans-serif] max-w-md mx-auto">
+          <div className="font-[sans-serif] max-w-md mx-auto container">
             <label className="text-sm text-gray-500 mt-3 mb-4 block">Customize your profile page with any image of your choice to add a personal touch.</label>
             <input type="file"
               className="w-full text-gray-500 text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-indigo-400 rounded"
